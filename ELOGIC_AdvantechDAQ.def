@@ -5,3 +5,4 @@ EXPORTS
     Read_AI;
     Read_DI;
     Write_DO;
+    Read_DO;

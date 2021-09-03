@@ -109,3 +109,23 @@ DllExport bool Write_DO(int iDO_pin, int iOutData)
 	
 	return true;
 }
+
+DllExport int Read_DO(int iDO_pin)
+{
+	ErrorCode ret = Success;
+	DeviceInformation devInfo(g_iDioDevNum);
+	ret = g_pInstantDoCtrl->setSelectedDevice(devInfo);
+	g_pInstantDoCtrl->getSelectedDevice(devInfo);
+	if(BioFailed(ret))
+		return -1;
+
+	int32 port = ((int32)iDO_pin-1) / 8;
+	int32 bit = ((int32)iDO_pin-1) % 8;
+	uint8 data = 0;
+	
+	ret = g_pInstantDoCtrl->ReadBit(port, bit, &data);
+	if(BioFailed(ret))
+		return -1;
+	
+	return (int)data;
+}
