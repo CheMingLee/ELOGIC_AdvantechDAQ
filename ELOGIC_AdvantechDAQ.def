@@ -1,7 +1,6 @@
 LIBRARY      "ELOGIC_AdvantechDAQ"
 
 EXPORTS
-    Set_DevNum;
     Read_AI;
     Read_DI;
     Write_DO;

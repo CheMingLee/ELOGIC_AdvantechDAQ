@@ -28,8 +28,6 @@ BOOL CELOGIC_AdvantechDAQApp::InitInstance()
 	g_pInstantAiCtrl = InstantAiCtrl::Create();
 	g_pInstantDiCtrl = InstantDiCtrl::Create();
 	g_pInstantDoCtrl = InstantDoCtrl::Create();
-	g_iAiDevNum = 0;
-	g_iDioDevNum = 0;
 
 	return TRUE;
 }
@@ -44,16 +42,10 @@ int CELOGIC_AdvantechDAQApp::ExitInstance()
 }
 
 // DLL Function
-DllExport void Set_DevNum(int iAiDevNum, int iDioDevNum)
-{
-	g_iAiDevNum = iAiDevNum;
-	g_iDioDevNum = iDioDevNum;
-}
-
-DllExport double Read_AI(int iChanel)
+DllExport double Read_AI(int iDevNum, int iChanel)
 {
 	ErrorCode ret = Success;
-	DeviceInformation devInfo(g_iAiDevNum);
+	DeviceInformation devInfo(iDevNum);
 	ret = g_pInstantAiCtrl->setSelectedDevice(devInfo);
 	g_pInstantAiCtrl->getSelectedDevice(devInfo);
 	if(BioFailed(ret))
@@ -69,10 +61,10 @@ DllExport double Read_AI(int iChanel)
 	return dataScaled;
 }
 
-DllExport int Read_DI(int iDI_pin)
+DllExport int Read_DI(int iDevNum, int iDI_pin)
 {
 	ErrorCode ret = Success;
-	DeviceInformation devInfo(g_iDioDevNum);
+	DeviceInformation devInfo(iDevNum);
 	ret = g_pInstantDiCtrl->setSelectedDevice(devInfo);
 	g_pInstantDiCtrl->getSelectedDevice(devInfo);
 	if(BioFailed(ret))
@@ -88,10 +80,10 @@ DllExport int Read_DI(int iDI_pin)
 	return (int)data;
 }
 
-DllExport bool Write_DO(int iDO_pin, int iOutData)
+DllExport bool Write_DO(int iDevNum, int iDO_pin, int iOutData)
 {
 	ErrorCode ret = Success;
-	DeviceInformation devInfo(g_iDioDevNum);
+	DeviceInformation devInfo(iDevNum);
 	ret = g_pInstantDoCtrl->setSelectedDevice(devInfo);
 	g_pInstantDoCtrl->getSelectedDevice(devInfo);
 	if(BioFailed(ret))
@@ -110,10 +102,10 @@ DllExport bool Write_DO(int iDO_pin, int iOutData)
 	return true;
 }
 
-DllExport int Read_DO(int iDO_pin)
+DllExport int Read_DO(int iDevNum, int iDO_pin)
 {
 	ErrorCode ret = Success;
-	DeviceInformation devInfo(g_iDioDevNum);
+	DeviceInformation devInfo(iDevNum);
 	ret = g_pInstantDoCtrl->setSelectedDevice(devInfo);
 	g_pInstantDoCtrl->getSelectedDevice(devInfo);
 	if(BioFailed(ret))
